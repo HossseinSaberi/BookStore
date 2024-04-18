@@ -16,7 +16,7 @@ class Book(CModel.BaseClass):
     book_slug = models.SlugField(_("Book_Slug"), blank=True, null=True)
     short_description = models.TextField(
         _("Book_Description"), null=True, blank=True)
-    author = models.ForeignKey("User.Author", verbose_name=_(
+    author = models.ForeignKey("Users.Author", verbose_name=_(
         "Author"), on_delete=models.PROTECT, related_name='book_author')
     publisher = models.ManyToManyField(
         "Books.Publisher", verbose_name=_("Publisher"), through='BookPublisher')
@@ -78,7 +78,7 @@ class BookPublisher(BookShape):
     book = models.ForeignKey("Books.Book", on_delete=models.DO_NOTHING, null=True, blank=True)
     publisher = models.ForeignKey(
         "Books.Publisher", on_delete=models.DO_NOTHING, null=True, blank=True)
-    translator = models.ForeignKey("User.Translator", verbose_name=_(
+    translator = models.ForeignKey("Users.Translator", verbose_name=_(
         "Translator"), on_delete=models.SET_NULL, null=True, blank=True, related_name='book_translator')
     isbn = models.CharField(_("ISBN"), max_length=50)
     price = models.DecimalField(_("Price"), max_digits=15, decimal_places=0)

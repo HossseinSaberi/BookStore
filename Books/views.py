@@ -1,14 +1,14 @@
 from rest_framework.views import APIView
 from rest_framework import viewsets
 from rest_framework.response import Response
-from Core import views as cview, paginations as cpage
+from Core import paginations as cpage
 from . import models
 from . import serializers
 
 # Create your views here.
 
 
-class ListBook(cview.BaseModel):
+class ListBook(viewsets.ModelViewSet):
     model = models.Book
     paginator_class = cpage.CustomPagination
     serializer_class = serializers.BookListSerializer
@@ -26,7 +26,7 @@ class ListBook(cview.BaseModel):
         serializer.save()
 
 
-class RetrieveBook(cview.BaseModel):
+class RetrieveBook(viewsets.ModelViewSet):
     model = models.Book
     serializer_class = serializers.BookDetailsSerializer
     lookup_field = None

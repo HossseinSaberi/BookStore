@@ -58,8 +58,8 @@ class PublisherAdmin(admin.ModelAdmin):
     
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('title','is_prize')
-    list_filter = ('title','is_prize',)
+    list_display = ('id','title','is_prize')
+    list_filter = ('is_prize','title',)
     search_fields = ("id", 'title__startwith')
     fieldsets = (('Category Detail', {
         'fields': (('title', 'category_slug'), ('bio',), ('is_prize', 'logo'))

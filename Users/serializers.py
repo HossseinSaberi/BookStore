@@ -4,10 +4,12 @@ from .import models
 class BaseAuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Author
-        fields = ['author_name','avatar']
+        fields = ['author_name',]
 
 class AuthorListSerializer(BaseAuthorSerializer):
     pass
 
 class AuthorDetailsSerializer(BaseAuthorSerializer):
-    pass
+    class Meta:
+        model = BaseAuthorSerializer.Meta.model
+        fields = BaseAuthorSerializer.Meta.fields + ['avatar']

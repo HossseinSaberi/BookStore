@@ -5,10 +5,10 @@ from . import views
 
 # router = routers.DefaultRouter()
 # router.register(r'',views.BookModel, basename='book-list')
-
 urlpatterns = [
-    path('v1/books/', include('Books.api_urls_v1'), name='books'),
+    # path('', include(router.urls)),
+    path('', views.BookListCreateView.as_view(), name="book-list"),
+    path('<slug:book_slug>', views.BookCreateRetrieveDeleteUpdateView.as_view(), name="book-details"),
 ]
-
 
 

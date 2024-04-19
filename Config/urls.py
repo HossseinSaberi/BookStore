@@ -34,9 +34,11 @@ schema_view = get_schema_view(
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0),name='schema-swagger-ui'),
-    # path('api/', include('Api.urls'), name='Api'),
-    path('api/v1/books/', include('Books.urls'), name='books'),
-    path('api/v1/interactions', include('Interactions.urls'), name='interactions')
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('api/', include('Api.urls'), name='Api'),
+    path("__debug__/", include("debug_toolbar.urls")),
+    # path('api/v1/books/', include('Books.urls'), name='books'),
+    # path('api/v1/interactions', include('Interactions.urls'), name='interactions')
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

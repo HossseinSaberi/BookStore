@@ -44,8 +44,9 @@ INSTALLED_APPS = [
     'Api.apps.ApiConfig',
     'Users.apps.UsersConfig',
     'rest_framework',
-    'rest_framework_swagger', 
-    'drf_yasg' 
+    'rest_framework_swagger',
+    'drf_yasg',
+    'debug_toolbar'
 ]
 
 MIDDLEWARE = [
@@ -56,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'Config.urls'
@@ -63,8 +65,7 @@ ROOT_URLCONF = 'Config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates']
-        ,
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,6 +77,19 @@ TEMPLATES = [
         },
     },
 ]
+
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_PARSER_CLASSES': [
+#         'rest_framework.parsers.JSONParser',
+#         'rest_framework.parsers.MultiPartParser',
+#     ]
+# }
 
 WSGI_APPLICATION = 'Config.wsgi.application'
 
@@ -126,7 +140,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
-MEDIA_ROOT = os.path.join(BASE_DIR,'Images/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'Images/')
 MEDIA_URL = '/Images/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

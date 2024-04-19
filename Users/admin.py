@@ -61,23 +61,23 @@ class ProfileAdmin(admin.ModelAdmin):
     )
     search_fields = ('firstname__istartswith', 'lastname__istartswith')
 
-    # def display_avatar(self, obj):
-    #     # Assuming 'avatar' is a field in your Profile model
-    #     if obj.avatar:
-    #         return f'<img src="{obj.avatar}" style="max-width: 50px; max-height: 50px;" />'
-    #     else:
-    #         return 'No Avatar'
-    #
-    # # Allow HTML rendering in the list display
-    # display_avatar.allow_tags = True
-    # display_avatar.short_description = 'Avatar'
+@admin.register(Author)
+class AuthorAdmin(admin.ModelAdmin):
+    list_display = ('id','author_name')
+    list_filter = ('author_name',)
+    search_fields = ('author_name__startwith',)
+    fieldsets = (('Publish Detail', {
+        'fields': (('author_name',),('bio',), ('avatar',))
+    }
+    ),)
+    # prepopulated_fields = {"author_name": ('author_slug',)}
+    
 
 admin.site.site_header = 'BookStore Management'
 admin.site.site_title = 'BookStore Management'
 admin.site.index_title = 'Welcome To Admin Panel'
 
 admin.site.register(CustomUser, CustomUserAdmin)
-admin.site.register(Author)
 admin.site.register(Translator)
 admin.site.register(Profile, ProfileAdmin)
 admin.site.register(UserLastActivity)

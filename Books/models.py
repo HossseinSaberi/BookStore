@@ -13,7 +13,8 @@ class Book(CModel.BaseClass):
         _("Book_Name"), max_length=100, null=True, blank=True)
     book_name_fa = models.CharField(
         _("Book_Name_Fa"), max_length=100, null=True, blank=True)
-    book_slug = models.SlugField(_("Book_Slug"), blank=True, null=True)
+    book_slug = models.SlugField(
+        _("Book_Slug"), blank=True, null=True, allow_unicode=True,)
     short_description = models.TextField(
         _("Book_Description"), null=True, blank=True)
     author = models.ForeignKey("Users.Author", verbose_name=_(
@@ -35,7 +36,8 @@ class Book(CModel.BaseClass):
         return reverse("Book_detail", kwargs={"pk": self.pk})
 
     def save(self, *args, **kwargs):
-        self.book_slug = slugify(self.book_name_en)
+        if not self.book_slug:
+            self.book_slug = slugify(self.book_name_en)
         super().save(*args, **kwargs)
 
 
@@ -43,7 +45,7 @@ class Publisher(models.Model):
 
     publisher_name = models.CharField(_("Publisher_Name"), max_length=50)
     publisher_slug = models.SlugField(
-        _("Publisher_Slug"),  blank=True, null=True)
+        _("Publisher_Slug"),  blank=True, null=True, allow_unicode=True,)
     avatar = models.ImageField(default='Images/avatar.png')
 
     class Meta:
@@ -57,7 +59,9 @@ class Publisher(models.Model):
         return reverse("Publisher_detail", kwargs={"pk": self.pk})
 
     def save(self, *args, **kwargs):
-        self.publisher_slug = slugify(self.publisher_name)
+        if not self.publisher_slug:
+            self.publisher_slug = slugify(self.publisher_name)
+
         self.avatar.name = CUtils.change_image_name(
             self.avatar, self.__class__.__name__, self.publisher_name)
         super().save(*args, **kwargs)
@@ -75,7 +79,8 @@ class BookShape(CModel.BaseClass):
 
 class BookPublisher(BookShape):
 
-    book = models.ForeignKey("Books.Book", on_delete=models.DO_NOTHING, null=True, blank=True)
+    book = models.ForeignKey(
+        "Books.Book", on_delete=models.DO_NOTHING, null=True, blank=True)
     publisher = models.ForeignKey(
         "Books.Publisher", on_delete=models.DO_NOTHING, null=True, blank=True)
     translator = models.ForeignKey("Users.Translator", verbose_name=_(
@@ -107,7 +112,8 @@ class Category(models.Model):
 
     title = models.CharField(_("Category"), max_length=50)
     bio = models.TextField(_("Category Description"), null=True, blank=True)
-    category_slug = models.SlugField(_("Category_Slug"), blank=True, null=True)
+    category_slug = models.SlugField(
+        _("Category_Slug"), blank=True, null=True, allow_unicode=True)
     is_prize = models.BooleanField(_("Is_Prize"), default=False)
     logo = models.ImageField(default='Images/avatar.png')
 
@@ -124,15 +130,17 @@ class Category(models.Model):
     def save(self, *args, **kwargs):
         self.logo.name = CUtils.change_image_name(
             self.logo, self.__class__.__name__, self.title)
-        self.category_slug = slugify(self.title)
+        if not self.category_slug:
+            self.category_slug = slugify(self.title, allow_unicode=True)
         super().save(*args, **kwargs)
+
 
 class BookCategory(models.Model):
 
     book = models.ForeignKey("Books.Book", on_delete=models.DO_NOTHING)
     category = models.ForeignKey(
         "Books.Category", on_delete=models.DO_NOTHING, null=True, blank=True)
-    year = models.IntegerField(_("Year"),null=True, blank=True)
+    year = models.IntegerField(_("Year"), null=True, blank=True)
     short_description = models.CharField(
         _("book_prize_description"), max_length=500, null=True, blank=True)
 

@@ -45,7 +45,7 @@ class Publisher(models.Model):
 
     publisher_name = models.CharField(_("Publisher_Name"), max_length=50)
     publisher_slug = models.SlugField(
-        _("Publisher_Slug"),  blank=True, null=True, allow_unicode=True,)
+        _("Publisher_Slug"),  blank=True, null=True, allow_unicode=True)
     avatar = models.ImageField(default='Images/avatar.png')
 
     class Meta:

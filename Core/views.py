@@ -2,7 +2,7 @@ from django.db import models
 from rest_framework import views
 from rest_framework.settings import api_settings
 from django.shortcuts import get_object_or_404
-from . import paginations
+from . import paginations, mixins as cmixin
 
 
 class BaseApiView(views.APIView):
@@ -72,3 +72,66 @@ class BaseApiView(views.APIView):
         for backend in list(self.filter_backends):
             queryset = backend().filter_queryset(self.request, queryset, self)
         return queryset
+
+
+class CreateView(
+        cmixin.CreateMixin,
+        BaseApiView):
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+class ListView(
+        cmixin.ListMixin,
+        BaseApiView):
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
+class RetrieveView(
+        cmixin.RetrieveMixin,
+        BaseApiView):
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+
+class UpdateView(
+        cmixin.UpdateMixin,
+        BaseApiView):
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def patch(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
+
+class DeleteView(
+        cmixin.DeleteMixin,
+        BaseApiView):
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
+
+
+class RetrieveDeleteView(
+        RetrieveView,
+        DeleteView):
+    pass
+
+
+class RetrieveDeleteUpdateView(
+        UpdateView,
+        RetrieveView,
+        DeleteView):
+    pass
+
+
+class CreateListView(
+        cmixin.SerializerByMethodMixin,
+        CreateView,
+        ListView):
+    pass

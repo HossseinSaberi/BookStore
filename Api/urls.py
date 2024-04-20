@@ -7,7 +7,7 @@ from . import views
 # router.register(r'',views.BookModel, basename='book-list')
 
 urlpatterns = [
-    path('v1/books/', include('Books.api_urls_v1'), name='books'),
+    path('v1/', include('Books.api_urls_v1'), name='books'),
 ]
 
 

@@ -14,7 +14,7 @@ class Book(CModel.BaseClass):
     book_name_fa = models.CharField(
         _("Book_Name_Fa"), max_length=100, null=True, blank=True)
     book_slug = models.SlugField(
-        _("Book_Slug"), blank=True, null=True, allow_unicode=True,)
+        _("Book_Slug"), blank=True, null=True,allow_unicode=True)
     short_description = models.TextField(
         _("Book_Description"), null=True, blank=True)
     author = models.ForeignKey("Users.Author", verbose_name=_(
@@ -30,14 +30,15 @@ class Book(CModel.BaseClass):
         verbose_name_plural = _("Books")
 
     def __str__(self):
-        return '{} from {}'.format(self.book_name_fa, self.author.author_name)
+        return '{} from {}'.format(self.book_name_fa, self.author.author_name_fa)
+        # return '{}'.format(self.book_name_fa)#, self.author.author_name_fa)
 
     def get_absolute_url(self):
         return reverse("Book_detail", kwargs={"pk": self.pk})
 
     def save(self, *args, **kwargs):
         if not self.book_slug:
-            self.book_slug = slugify(self.book_name_en)
+            self.book_slug = slugify(self.book_name_en, allow_unicode=True)
         super().save(*args, **kwargs)
 
 
@@ -45,7 +46,7 @@ class Publisher(models.Model):
 
     publisher_name = models.CharField(_("Publisher_Name"), max_length=50)
     publisher_slug = models.SlugField(
-        _("Publisher_Slug"),  blank=True, null=True, allow_unicode=True)
+        _("Publisher_Slug"),  blank=True, null=True,allow_unicode=True)
     avatar = models.ImageField(default='Images/avatar.png')
 
     class Meta:
@@ -60,7 +61,7 @@ class Publisher(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.publisher_slug:
-            self.publisher_slug = slugify(self.publisher_name)
+            self.publisher_slug = slugify(self.publisher_name, allow_unicode=True)
 
         self.avatar.name = CUtils.change_image_name(
             self.avatar, self.__class__.__name__, self.publisher_name)
@@ -113,7 +114,7 @@ class Category(models.Model):
     title = models.CharField(_("Category"), max_length=50)
     bio = models.TextField(_("Category Description"), null=True, blank=True)
     category_slug = models.SlugField(
-        _("Category_Slug"), blank=True, null=True, allow_unicode=True)
+        _("Category_Slug"), blank=True, null=True,allow_unicode=True)
     is_prize = models.BooleanField(_("Is_Prize"), default=False)
     logo = models.ImageField(default='Images/avatar.png')
 

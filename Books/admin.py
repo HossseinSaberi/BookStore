@@ -33,8 +33,8 @@ class BookCategoryInline(admin.StackedInline):
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
     list_display = ("book_name_fa", 'book_name_en', 'author', 'writen_date')
-    list_filter = ("author__author_name",'publisher__publisher_name')
-    search_fields = ('book_name_en__istartswith', 'author__author_name__istartswith')
+    list_filter = ("author__author_name_fa",'publisher__publisher_name')
+    search_fields = ('book_name_en__istartswith', 'author__author_name_fa__istartswith')
     fieldsets = (
         ('Main Detail', {
             'classes': ('wide',),

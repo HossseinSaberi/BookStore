@@ -147,3 +147,4 @@ MEDIA_URL = '/Images/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'Users.CustomUser'
+ALLOW_UNICODE_SLUGS = True

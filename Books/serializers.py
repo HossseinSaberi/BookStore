@@ -62,9 +62,8 @@ class BookCategorySerializer(serializers.ModelSerializer):
 ### ================================================================ ###
 
 
-class BaseBookSerializer(serializers.ModelSerializer):
+class BaseBookSerializer(serializers.HyperlinkedModelSerializer):
     author = USerializer.AuthorListSerializer(many=False, read_only=True)
-
     class Meta:
         model = models.Book
         fields = ['book_name_en', 'book_name_fa',
@@ -76,6 +75,12 @@ class BookListSerializer(BaseBookSerializer):
 
 
 class BookDetailsSerializer(BaseBookSerializer):
+    author = serializers.HyperlinkedRelatedField(
+        view_name='author-details',
+        lookup_field='author_slug',
+        read_only=True
+    )
+
     publishers = BookPublisherSerializer(
         many=True, source='bookpublisher_set', read_only=True)
     categories = BookCategorySerializer(
@@ -84,9 +89,10 @@ class BookDetailsSerializer(BaseBookSerializer):
     class Meta:
         model = BaseBookSerializer.Meta.model
         fields = BaseBookSerializer.Meta.fields + \
-            ['short_description', 'writen_date', 'author', 'publishers', 'categories']
+            ['short_description', 'writen_date', 'publishers', 'categories']
 
 ### ================================================================ ###
+
 
 class PublisherBooksSerializer(serializers.ModelSerializer):
     book_set = BookListSerializer(many=True)
@@ -94,11 +100,12 @@ class PublisherBooksSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Publisher
         fields = ['publisher_name', 'publisher_slug', 'avatar', 'book_set']
-        
+
 
 class CategoryBooksSerializer(serializers.ModelSerializer):
     book_set = BookListSerializer(many=True)
 
     class Meta:
         model = models.Category
-        fields = ['title', 'category_slug', 'bio', 'is_prize', 'logo', 'book_set']
+        fields = ['title', 'category_slug',
+                  'bio', 'is_prize', 'logo', 'book_set']

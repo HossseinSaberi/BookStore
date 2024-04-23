@@ -8,6 +8,7 @@ from . import views
 
 urlpatterns = [
     path('v1/', include('Books.api_urls_v1'), name='books'),
+    path('v1/writers/', include('Users.api_urls_v1'), name='writers'),
 ]
 
 

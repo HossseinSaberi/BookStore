@@ -1,5 +1,6 @@
 from rest_framework.parsers import MultiPartParser, FileUploadParser
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
 from Core import paginations as cpage, views as cviews, mixins as cmixin
 from . import models
 from . import serializers
@@ -15,9 +16,9 @@ class BookListCreateView(
     model = models.Book
     queryset = model.objects.all()
     paginator_class = cpage.CustomPagination
-    # serializer_map = {
-    #     'POST': serializers.BookDetailsSerializer,
-    # }
+    serializer_map = {
+        'POST': serializers.BookDetailsSerializer,
+    }
 
 
 class BookRetrieveDeleteUpdateView(
@@ -26,6 +27,7 @@ class BookRetrieveDeleteUpdateView(
     model = models.Book
     queryset = model.objects.all()
     serializer_class = serializers.BookDetailsSerializer
+    permission_classes = [IsAuthenticated]
     lookup_field = 'book_slug'
 
 

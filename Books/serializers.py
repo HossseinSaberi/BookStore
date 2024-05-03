@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .import models
-from Users import serializers as USerializer, models as UModel
+from Humans import serializers as USerializer, models as UModel
 
 
 class BaseCategorySerializer(serializers.ModelSerializer):

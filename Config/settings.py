@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'Core.apps.CoreConfig',
     'Interactions.apps.InteractionsConfig',
     'Api.apps.ApiConfig',
-    'Users.apps.UsersConfig',
+    'Humans.apps.HumanConfig',
+    'Management.apps.ManagementConfig',
     'rest_framework',
     'rest_framework_swagger',
     'drf_yasg',
@@ -59,6 +60,31 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'Management.backends.EmailModelBackend',
+    'Management.backends.UserNameModelBackend',
+    'Management.backends.MobileModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+REST_FRAMEWORK = {
+
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'Management.authentication.CustomJWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+
+}
+
+JWT_CONF = {
+    'ALGORITHM' : 'HS256',
+    'TOKEN_LIFETIME_HOURS' : 1,
+    'AUTH_HEADER' : 'Bearer'
+    
+}
 
 ROOT_URLCONF = 'Config.urls'
 
@@ -108,20 +134,20 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
+# AUTH_PASSWORD_VALIDATORS = [
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+#     },
+# ]
 
 
 # Internationalization
@@ -146,5 +172,5 @@ MEDIA_URL = '/Images/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-AUTH_USER_MODEL = 'Users.CustomUser'
+AUTH_USER_MODEL = 'Management.CustomUser'
 ALLOW_UNICODE_SLUGS = True

@@ -12,6 +12,8 @@ class BaseApiView(views.APIView):
     lookup_url_kwarg = None
     pagination_class = api_settings.DEFAULT_FILTER_BACKENDS
     filter_backends = api_settings.DEFAULT_FILTER_BACKENDS
+    authentication_classes = api_settings.DEFAULT_AUTHENTICATION_CLASSES
+    permission_classes = api_settings.DEFAULT_PERMISSION_CLASSES
 
     def __class_getitem__(cls, *args, **kwargs):
         return cls

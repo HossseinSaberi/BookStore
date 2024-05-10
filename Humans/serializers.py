@@ -5,7 +5,7 @@ from .import models
 class BaseAuthorSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = models.Author
-        fields = ['author_name_en','author_name_fa']
+        fields = ['author_name_en','author_name_fa', 'author_slug']
 
 class AuthorListSerializer(BaseAuthorSerializer):
     pass

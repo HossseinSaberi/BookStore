@@ -6,7 +6,7 @@ from Humans import serializers as USerializer, models as UModel
 class BaseCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Category
-        fields = ['title', 'is_prize']
+        fields = ['title', 'category_slug']
 
 
 class CategoryListSerializer(BaseCategorySerializer):
@@ -17,7 +17,7 @@ class CategoryDetailsSerializer(BaseCategorySerializer):
     class Meta:
         model = BaseCategorySerializer.Meta.model
         fields = BaseCategorySerializer.Meta.fields + \
-            ['bio', 'category_slug', 'logo']
+            ['bio', 'parent', 'logo']
 
 ### ================================================================ ###
 
@@ -25,7 +25,7 @@ class CategoryDetailsSerializer(BaseCategorySerializer):
 class PublisherSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Publisher
-        fields = ['publisher_name']
+        fields = ['publisher_name','publisher_slug']
 
 
 class PublisherListSerializer(PublisherSerializer):
@@ -56,7 +56,7 @@ class BookCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.BookCategory
-        fields = ['category', 'year', 'short_description']
+        fields = ['category', 'short_description']
 
 
 ### ================================================================ ###
@@ -108,4 +108,4 @@ class CategoryBooksSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Category
         fields = ['title', 'category_slug',
-                  'bio', 'is_prize', 'logo', 'book_set']
+                  'bio', 'parent', 'logo', 'book_set']

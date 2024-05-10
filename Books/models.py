@@ -115,7 +115,8 @@ class Category(models.Model):
     bio = models.TextField(_("Category Description"), null=True, blank=True)
     category_slug = models.SlugField(
         _("Category_Slug"), blank=True, null=True,allow_unicode=True)
-    is_prize = models.BooleanField(_("Is_Prize"), default=False)
+    parent = models.ForeignKey("Category", verbose_name=_(
+        "Parent"), on_delete=models.SET_NULL, related_name='self_relation', null=True, blank=True)
     logo = models.ImageField(default='Images/avatar.png')
 
     class Meta:
@@ -141,7 +142,6 @@ class BookCategory(models.Model):
     book = models.ForeignKey("Books.Book", on_delete=models.DO_NOTHING)
     category = models.ForeignKey(
         "Books.Category", on_delete=models.DO_NOTHING, null=True, blank=True)
-    year = models.IntegerField(_("Year"), null=True, blank=True)
     short_description = models.CharField(
         _("book_prize_description"), max_length=500, null=True, blank=True)
 

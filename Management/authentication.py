@@ -20,26 +20,24 @@ class AuthenticationService:
     
 class CustomJWTAuthentication(BaseAuthentication):
     def authenticate(self, request):
-        print(request.META)
         jwt_token = request.META.get('HTTP_AUTHORIZATION')
         
         if jwt_token is None:
             return None
-        
-        
-        jwt_token = self.get_the_token_from_header(jwt_token)
 
+        jwt_token = self.get_the_token_from_header(jwt_token)
         try:
-            payload = jwt.decode(token, settings.SECRET_KEY, algorithms=settings.JWT_CONF['ALGORITHM'])            
+            payload = jwt.decode(jwt_token, settings.SECRET_KEY, algorithms=settings.JWT_CONF['ALGORITHM'])
         except jwt.ExpiredSignatureError:
             raise AuthenticationFailed('Token Has Expired!')
         except jwt.InvalidAlgorithmError:
             raise AuthenticationFailed('Invalid Token!')
         except:
             ParseError()
-        
-        user_identifier = payload.get(user_identifier)
-        user = AuthenticationService.authenticate_user(request=request, username=user_identifier, password=password)
+
+        user_identifier = payload.get('user_identifier')
+        user = AuthenticationService.authenticate_user(request=request, username=user_identifier, has_password=False)
+        return user, user.is_authenticated
     
     def authenticate_header(self, request):
         return settings.JWT_CONF['AUTH_HEADER']

@@ -16,7 +16,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -27,7 +26,6 @@ SECRET_KEY = 'django-insecure-6-0x&x%^c1a3ax#lttyis9bt#u)7&2jjey*mdt=r3ecn6cjj()
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -80,10 +78,52 @@ REST_FRAMEWORK = {
 }
 
 JWT_CONF = {
-    'ALGORITHM' : 'HS256',
-    'TOKEN_LIFETIME_HOURS' : 1,
-    'AUTH_HEADER' : 'Bearer'
-    
+    'ALGORITHM': 'HS256',
+    'TOKEN_LIFETIME_HOURS': 1,
+    'AUTH_HEADER': 'Bearer'
+
+}
+LOGGING = {
+    'version': 1,
+    'disable_existing_logger': True,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+            'level': 'CRITICAL'
+        },
+        'file': {
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': 'django_app.log',
+            'when': 'midnight',
+            'interval': 1,
+            'backupCount': 7,
+            'level': 'ERROR',
+            'formatter': 'verbose',
+        },
+        'mail_admins': {
+            'level': 'CRITICAL',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'filters': [],
+        },
+
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'WARNING',
+            'propagate': True,
+        }
+    },
 }
 
 ROOT_URLCONF = 'Config.urls'
@@ -119,7 +159,6 @@ REST_FRAMEWORK = {
 
 WSGI_APPLICATION = 'Config.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
@@ -129,7 +168,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -160,7 +198,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/

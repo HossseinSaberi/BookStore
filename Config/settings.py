@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from django.conf import settings
+import string
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
     'Api.apps.ApiConfig',
     'Humans.apps.HumanConfig',
     'Management.apps.ManagementConfig',
+    'Order.apps.OrderConfig',
     'rest_framework',
     'rest_framework_swagger',
     'drf_yasg',
@@ -159,9 +162,6 @@ REST_FRAMEWORK = {
 
 WSGI_APPLICATION = 'Config.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -211,3 +211,19 @@ MEDIA_URL = '/Images/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'Management.CustomUser'
 ALLOW_UNICODE_SLUGS = True
+
+
+#Coupon Setting
+
+COUPON_TYPES = getattr(settings, 'COUPONS_COUPON_TYPES', (
+    ('monetary', 'Money based coupon'),
+    ('percentage', 'Percentage discount'),
+))
+
+CODE_LENGTH = getattr(settings, 'COUPONS_CODE_LENGTH', 15)
+
+CODE_CHARS = getattr(settings, 'COUPONS_CODE_CHARS', string.ascii_letters+string.digits)
+
+SEGMENTED_CODES = getattr(settings, 'COUPONS_SEGMENTED_CODES', False)
+SEGMENT_LENGTH = getattr(settings, 'COUPONS_SEGMENT_LENGTH', 4)
+SEGMENT_SEPARATOR = getattr(settings, 'COUPONS_SEGMENT_SEPARATOR', "-")
